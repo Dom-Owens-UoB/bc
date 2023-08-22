@@ -1,0 +1,81 @@
+##	user guide/build requirements
+
+ 
+The functions in main.py are used to download data from yahoo finance using mongodb. The russell2000 index is omitted for runtime considerations.
+
+
+The function "regression" in reg.py regresses the chosen index onto up to 10 assets, over a given time window. 
+The results (fitted vs. actual) are displayed as a scatterplot, and the summary of the regression object is displayed.
+The function "subset" identifies a subset of assets which correlate most with the first principal component. This can be used to identify which assets to use in the regression.
+
+
+The function "get_most_correlated_pairs" in pairs.py identifies the pairs of assets with the greatest absolute correlation, and calculates the mean reversion speed for their spreads.
+The function "trade" executes a pairs trading strategy for two given stocks, depending on starting capital, a lookback period, and entry and exit thresholds. 
+The history of positions, portfolio value, and returns are given, as well as the sharpe and sortino ratios.
+
+
+"dashboard.py" contains an executable dashboard for the pairs strategy. This has input options for the strategy parameters, and outputs a graph and table of summaries.
+
+
+
+INSTALLED VERSIONS
+------------------
+commit           : 0f437949513225922d851e9581723d82120684a6
+python           : 3.9.16.final.0
+python-bits      : 64
+OS               : Linux
+OS-release       : 5.4.0-137-generic
+Version          : #154~18.04.1-Ubuntu SMP Tue Jan 10 16:58:20 UTC 2023
+machine          : x86_64
+processor        : x86_64
+byteorder        : little
+LC_ALL           : None
+LANG             : en_GB.UTF-8
+LOCALE           : en_GB.UTF-8
+pandas           : 2.0.3
+numpy            : 1.25.2
+pytz             : 2023.3
+dateutil         : 2.8.2
+setuptools       : 68.0.0
+pip              : 23.2.1
+Cython           : None
+pytest           : None
+hypothesis       : None
+sphinx           : None
+blosc            : None
+feather          : None
+xlsxwriter       : None
+lxml.etree       : 4.9.3
+html5lib         : 1.1
+pymysql          : None
+psycopg2         : None
+jinja2           : 3.1.2
+IPython          : None
+pandas_datareader: None
+bs4              : 4.12.2
+bottleneck       : None
+brotli           : None
+fastparquet      : None
+fsspec           : None
+gcsfs            : None
+matplotlib       : 3.8.0rc1
+numba            : None
+numexpr          : None
+odfpy            : None
+openpyxl         : None
+pandas_gbq       : None
+pyarrow          : None
+pyreadstat       : None
+pyxlsb           : None
+s3fs             : None
+scipy            : 1.11.2
+snappy           : None
+sqlalchemy       : None
+tables           : None
+tabulate         : None
+xarray           : None
+xlrd             : None
+zstandard        : None
+tzdata           : 2023.3
+qtpy             : None
+pyqt5            : None
