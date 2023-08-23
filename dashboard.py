@@ -1,16 +1,15 @@
 from dash import Dash, html, dcc, dash_table, callback, Input, Output
 import pairs
+import plotly.express as px
 
 
 
 
-
-
+df = pairs.get_df()
 ## app
 app = Dash(__name__)
 
-fig, tab = None, None
-df = pairs.get_df()
+#fig, tab = None, None
 
 app.layout = html.Div([
     html.H1("Pairs Trading"),
@@ -23,6 +22,10 @@ app.layout = html.Div([
         value=20,
         marks={i: str(i) for i in range(5, 51, 5)}
     ),
+    html.Label('Entry Threshold'),
+    dcc.Input(id = "entry", value=1.0, type='number'),
+    html.Label('Exit Threshold'),
+    dcc.Input(id = "exit",  value=0.2, type='number'),
     dcc.Dropdown(
         id="stock-dropdown1",
         options=[{"label": stock_name1, "value": stock_name1} for stock_name1 in ["AAPL","MSFT","TSLA"]],
@@ -33,37 +36,35 @@ app.layout = html.Div([
         options=[{"label": stock_name2, "value": stock_name2} for stock_name2 in ["AAPL", "MSFT", "TSLA"]],
         value="MSFT"
     ),
-    #dash_table.DataTable(id="portfolio-table", page_size=10),
-    dcc.Graph(id="portfolio-graph", figure = fig)
+    html.Table([
+        html.Tr([html.Td("sharpe"), html.Td(id='sharpe')]),
+        html.Tr([html.Td("sortino"), html.Td(id='sortino')]),
+    ]),
+    dcc.Graph(id="portfolio-graph")
 ])
 
 @app.callback(
     Output("portfolio-graph", "figure"),
-    Output("portfolio-tab", "dash_table"),
+    Output("sharpe", "children"),
+    Output("sortino", "children"),
     Input("stock-dropdown1", "value"),
     Input("stock-dropdown2", "value"),
-    Input("lookback-slider", "value")
+    Input("lookback-slider", "value"),
+    Input("entry", "value"),
+    Input("exit", "value")
 )
-def update_graph(stock1, stock2, lookback_period):
+def update_graph(stock1, stock2, lookback_period, entry, exit):
     # Apply the pairs trading strategy
 
     trade_out = pairs.trade(df[stock1], df[stock2], capital=1.0,
-                            lookback_period=lookback_period, entry_threshold=1.0, exit_threshold=0.2)
+                            lookback_period=lookback_period, entry_threshold=entry, exit_threshold=exit)
 
     # Create a plot of portfolio value
-    figure = {
-        "data": [
-            {"x": stock1.index, "y": trade_out["portfolio_value"], "type": "line", "name": "Portfolio Value"},
-            {"x": stock1.index, "y": stock1, "type": "line", "name": "Stock 1 Price"},
-            {"x": stock2.index, "y": stock2, "type": "line", "name": "Stock 2 Price"}
-        ],
-        "layout": {"title": "Pairs Trading"}
-    }
-
-    table = dash_table.DataTable([trade_out["sharpe"], trade_out["sortino"]])
+    figure = px.line(trade_out["value"])
 
 
-    return figure, table
+
+    return figure, trade_out["sharpe"], trade_out["sortino"]
 
 #fig, tab = update_graph(stock1, stock2, lookback_period)
 
