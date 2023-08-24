@@ -26,6 +26,8 @@ def fetch_store_data(tickers, collection_name):
 
         print(f"Stored close data for {ticker} in {collection_name}")
 
+
+
 # List of tickers for S&P 500, Russell 2000, and Nasdaq 100
 sp500_tickers = pd.read_html(
     'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')[0]["Symbol"]

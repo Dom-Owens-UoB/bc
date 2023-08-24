@@ -15,14 +15,15 @@ def regression(cols, index = "nasdaq100", start_date = "2023-01-10", end_date = 
      y = ind[index_tickers[index]]
      mod = sm.OLS(y, x)
      res = mod.fit()
-     print(res.summary())
-     import matplotlib.pyplot as plt
-     plt.plot(y, res.fittedvalues, "o")
-     plt.show()
+     #print(res.summary())
+     #import matplotlib.pyplot as plt
+     #plt.plot(y, res.fittedvalues, "o")
+     #plt.show()
+     return res.summary(), y, res.fittedvalues
 
 
 
-regression(["AAPL", "MSFT"])
+#regression(["AAPL", "MSFT"])
 
 
 
